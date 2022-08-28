@@ -418,6 +418,13 @@ footer::after {
   transform: rotateZ(10deg);
 }
 
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+  margin-bottom: 11px;
+}
+
 @media screen and (max-width: 1030px) {
 
   #section-inverted-world,
