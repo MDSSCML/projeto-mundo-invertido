@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mundo Invertido | Semana Front-end</title>
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <script src="./assets/InverterMundos/inverter.js"></script>
+  <script type="module" src="./assets/Controller/Restricoes.js"></script>
+  
 </head>
 
 <body class="light-theme">
   <header>
+
     <div class="header-content">
       <img class="invert-element" src="assets/images/banner/logo.svg" alt="" />
       <p class="invert-element">
@@ -22,7 +26,7 @@
         Vecna. Você está preparado? Então clique no botão abaixo para entrar
         no Mundo Invertido!
       </p>
-      <button id="switch-theme-button" onclick="switchTheme()">Inverter Mundos</button>
+      <button id="switch-theme-button" class="switchTheme">Inverter Mundos</button>
     </div>
 
     <div id="top-characters" class="world-characters"></div>
@@ -113,6 +117,10 @@
             <label for="level">Level</label>
             <input type="number" name="level" id="txtLevel">
 
+            <input type="number" name="latitude" id="txtLatitude" readonly style="display: none;">
+            <input type="number" name="longitude" id="txtLongitude" readonly style="display: none;">
+
+
             <label for="character">Personagem</label>
             <textarea name="character" cols="30" rows="10" id="txtCharacter"></textarea>
 
@@ -129,109 +137,10 @@
       prática os conhecimentos de HTML, CSS e JavaScript aprendidos na DIO._
     </p>
     <img src="assets/images/footer/MárcioDevelop.jpeg" alt="" class="avatar">
-    Márcio Develop
   </footer>
 
-  <audio id="music" src="assets/musics/normal-world.mpeg" autoplay></audio>
+  <audio id="music" src="assets/musics/normal-world.mpeg" autoplay></audio>   
 
-  <script>
-    window.addEventListener('click', function () {
-      const audio = document.getElementById('music');
-      audio.play();
-      audio.volume = 0.2;
-    })
-    function switchTheme() {
-      document.body.classList.toggle('dark-theme');
-      document.body.classList.toggle('light-theme');
-
-      const theme = document.body.classList[0];
-      const music = theme === 'light-theme' ? 'normal-world.mpeg' : 'inverted-world.mpeg'
-
-      const audio = document.getElementById('music');
-      audio.src = `assets/musics/${music}`;
-      audio.play();
-      audio.volume = 0.2;
-    }
-  </script>
-
-  <script type="module">
-
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyD0nFD_T1sESAqXMPrjJWOe9qZC05njS_k",
-      authDomain: "projeto-mundo-invertido-ead44.firebaseapp.com",
-      projectId: "projeto-mundo-invertido-ead44",
-      storageBucket: "projeto-mundo-invertido-ead44.appspot.com",
-      messagingSenderId: "435623596630",
-      appId: "1:435623596630:web:60faabefb9bc8a6c20e1f7"
-    };
-    const app = initializeApp(firebaseConfig);
-    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.9.3/firebase-firestore.js'
-
-    document.querySelector('.btnSubscribe').addEventListener('click', async (e) => {
-
-      let txtName = document.getElementById('txtName').value;
-      let txtEmail = document.getElementById('txtEmail').value;
-      let txtLevel = document.getElementById('txtLevel').value;
-      let txtCharacter = document.getElementById('txtCharacter').value;
-
-      let subscription = {
-        name: txtName,
-        email: txtEmail,
-        level: txtLevel,
-        character: txtCharacter
-      }
-      if (subscription.name === "" || subscription.email === "" || subscription.level === "" || subscription.character === "") {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          showClass: {
-            popup: 'swal2-show',
-            backdrop: 'swal2-backdrop-show',
-            icon: 'swal2-icon-show'
-          },
-          timer: 4000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-        Toast.fire({
-          icon: 'error',
-          title: 'Preencha  todos os campos'
-        })
-        e.preventDefault();
-      } else {
-        const db = getFirestore(app);
-        const hellfireClubCollection = collection(db, 'hellfire-clube');
-        await addDoc(hellfireClubCollection, subscription);
-
-        Swal.fire({
-          title: 'Ha Ha Ha!',
-          text: 'Bem vindo ao clube DUNGEONS & DRAGONS!',
-          icon: 'success',
-          template: '#template'
-        })
-        txtName = document.getElementById('txtName').value = "";
-        txtEmail = document.getElementById('txtEmail').value = "";
-        txtLevel = document.getElementById('txtLevel').value = "";
-        txtCharacter = document.getElementById('txtCharacter').value = "";
-      }
-      
-      setTimeout(() => {
-        if (!window.navigator.onLine) {
-          Swal.fire({
-            title:'Sem Internet ',
-            text:'Verifique sua conexão',
-            icon:'error'
-          })
-        }
-      }, 100)
-    })
-  </script>
   <template id="template">
     <swal-footer>
       <p>Inscrição feita com sucesso</p>

@@ -276,15 +276,16 @@ section {
   width: 100%;
   background: var(--background-lamp-image) 120% / 50% no-repeat;
   justify-content: center;
+  -webkit-mask-image: linear-gradient( black 50%,transparent);
 }
 
 #section-stranger-things-gallery .container {
   width: 100%;
 }
 
-#section-stranger-things-gallery .container h2 {
+/* #section-stranger-things-gallery .container h2 {
   width: 800px;
-}
+} */
 
 #section-stranger-things-gallery .gallery-container {
   display: flex;
@@ -316,9 +317,9 @@ section {
   text-align: center;
 }
 
-#section-form h2 {
+/* #section-form h2 {
   width: 600px;
-}
+} */
 
 #section-form .form-content h3 {
   color: var(--highlight-color);
@@ -418,11 +419,10 @@ footer::after {
   transform: rotateZ(10deg);
 }
 
-.avatar {
+.avatar{
   width: 60px;
   height: 60px;
-  border-radius: 50px;
-  margin-bottom: 11px;
+  border-radius: 50px; 
 }
 
 @media screen and (max-width: 1030px) {
