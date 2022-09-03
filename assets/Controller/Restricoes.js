@@ -97,7 +97,6 @@ function getLocation() {
 function sucesso(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    const time = position.timestamp;
     document.getElementById('txtLatitude').value = latitude;
     document.getElementById('txtLongitude').value = longitude;
 }
