@@ -6,7 +6,7 @@ const app = initializeApp(firebaseConfig);
 
 import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.9.3/firebase-firestore.js'
 
-document.querySelector('.btnSubscribe').addEventListener('click', async (e) => {
+document.querySelector('.btnSubscribe').addEventListener('click',async (e) => {
 
     let txtName = document.getElementById('txtName').value;
     let txtEmail = document.getElementById('txtEmail').value;
@@ -47,22 +47,36 @@ document.querySelector('.btnSubscribe').addEventListener('click', async (e) => {
         })
         e.preventDefault();
     } else {
-        // Gravação no banco de dados
-        const db = getFirestore(app);
-        const hellfireClubCollection = collection(db, 'hellfire-clube');
-        await addDoc(hellfireClubCollection, subscription);
-        // alerta de cadastro bem sucedido
+
         Swal.fire({
-            title: 'Ha Ha Ha!',
-            text: 'Bem vindo ao clube DUNGEONS & DRAGONS!',
-            icon: 'success',
-            template: '#template'
+            title: 'Esta certo disso?',
+            showDenyButton: true,
+            confirmButtonText: 'Sim',
+            denyButtonText: `Não`,
+            icon: 'question',
+            iconColor: '#cf0f0f',
+            background: '#000000',
+            color: '#cf0f0f',
+            confirmButtonColor: '#000000',
+            denyButtonColor: '#cf0f0f',
+        }).then( async (value) => {
+            if (value.isConfirmed) {
+                // Gravação no banco de dados
+                const db = getFirestore(app);
+                const hellfireClubCollection = collection(db, 'hellfire-clube');
+                await addDoc(hellfireClubCollection, subscription);
+                Swal.fire('Salvo', '', 'success')
+                txtName = document.getElementById('txtName').value = "";
+                txtEmail = document.getElementById('txtEmail').value = "";
+                txtLevel = document.getElementById('txtLevel').value = "";
+                txtCharacter = document.getElementById('txtCharacter').value = "";
+            } else if (value.isDenied) {
+                Swal.fire({
+                    title: 'Cancelado com sucesso',
+                    icon: 'info'
+                })
+            }
         })
-        // Limpa os dados do input
-        txtName = document.getElementById('txtName').value = "";
-        txtEmail = document.getElementById('txtEmail').value = "";
-        txtLevel = document.getElementById('txtLevel').value = "";
-        txtCharacter = document.getElementById('txtCharacter').value = "";
     }
     // alerta de erro quando sem internet
     setTimeout(() => {
